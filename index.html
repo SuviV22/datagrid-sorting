@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Data Grid with Sorting</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .column {
+            padding: 20px;
+            border: 1px solid #ccc;
+        }
+        h2 {
+            text-align: center;
+        }
+        .sortBtn {
+            height: 40px;
+        }
+        .header {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="column" id="currencyCol">
+            <div class="container">
+                <h2 class="header">Currency</h2>
+                <button onclick="sortColumn('currencyCol')">sort</button>
+            </div>
+            <ul id="currencyList"></ul>
+        </div>
+        <div class="column" id="amountCol">
+            <div class="container">
+                <h2 class="header">Amount</h2>
+                <button onclick="sortColumn('amountCol')">sort</button>
+            </div>
+            <ul id="amountList"></ul>
+        </div>
+    </div>
+
+    <script>
+        const objArr = [
+            {currency: "AUD", amount: 1100.00},
+            {currency: "MYR", amount: 899.00},
+            {currency: "GBP", amount: 56000.00},
+            {currency: "EUR", amount: 5388.00}
+        ];
+        let sortDirection = false;
+
+        function populateColumns(objArr) {
+            const currencyCol = document.getElementById("currencyList");
+            const amountCol = document.getElementById("amountList");
+
+            objArr.forEach(item => {
+                const currencyLi = document.createElement('li');
+                currencyLi.textContent = item.currency;
+                currencyCol.appendChild(currencyLi);
+
+                const amountLi = document.createElement('li');
+                amountLi.textContent = item.amount;
+                amountCol.appendChild(amountLi);
+            });
+        }
+
+        populateColumns(objArr);
+
+        function sortColumn(column) {
+            const currencyCol = document.getElementById("currencyList");
+            const amountCol = document.getElementById("amountList");
+
+            currencyList.innerHTML = '';
+            amountList.innerHTML = '';
+
+            const sortedData = [...objArr];
+
+            sortDirection = !sortDirection;
+            
+            sortedData.sort((a, b) => {
+                if (column === 'currencyCol') {
+                    if(sortDirection) {
+                        return a.currency.localeCompare(b.currency);
+                    } else {
+                        return b.currency.localeCompare(a.currency);
+                    }
+                } else if (column === 'amountCol') {
+                    if(sortDirection) {
+                        return a.amount - b.amount;
+                    } else {
+                        return b.amount - a.amount;
+                    }
+                }
+            });
+
+            populateColumns(sortedData);
+        }
+    </script>
+</body>
+</html>
